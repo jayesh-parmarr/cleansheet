@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+
+# Datasets
+datasets/
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Pytest
+.pytest_cache/
+
+# Mypy
+.mypy_cache/
