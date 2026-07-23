@@ -23,61 +23,92 @@ st.set_page_config(page_title="Cleansheet", page_icon="🧹", layout="wide")
 st.markdown("""
 <style>
 /* ── Base ── */
-[data-testid="stAppViewContainer"] {
-    background: #0d1117;
-}
-[data-testid="stHeader"] { background: transparent; }
+[data-testid="stAppViewContainer"] { background: #0d1117; }
+[data-testid="stHeader"]           { background: transparent; }
+[data-testid="stSidebar"]          { display: none; }
 
-/* ── Sidebar ── */
-[data-testid="stSidebar"] {
+/* ── Landing cards ── */
+.choice-card {
     background: #161b22;
-    border-right: 1px solid #30363d;
-}
-[data-testid="stSidebar"] .stRadio label { color: #c9d1d9 !important; }
-
-/* ── Hero banner ── */
-.hero {
-    background: linear-gradient(135deg, #1a1f2e 0%, #0f3460 100%);
     border: 1px solid #30363d;
-    border-radius: 14px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 1.75rem;
+    border-radius: 16px;
+    padding: 2rem;
+    height: 100%;
+    transition: border-color 0.2s;
 }
-.hero-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0 0 0.25rem 0;
-    letter-spacing: -0.5px;
+.choice-card:hover { border-color: #58a6ff; }
+.choice-icon  { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.choice-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 0.4rem;
 }
-.hero-sub {
+.choice-desc  { font-size: 0.85rem; color: #8b949e; line-height: 1.6; margin-bottom: 1.25rem; }
+.choice-pill  {
+    display: inline-block;
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 20px;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.75rem;
     color: #8b949e;
-    font-size: 0.95rem;
+    margin: 0.2rem 0.2rem 0 0;
+}
+
+/* ── Hero (landing) ── */
+.landing-hero {
+    text-align: center;
+    padding: 3.5rem 1rem 2.5rem;
+}
+.landing-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #e6edf3;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+}
+.landing-sub {
+    font-size: 1.05rem;
+    color: #8b949e;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Dashboard top bar ── */
+.dash-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #21262d;
+}
+.dash-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #e6edf3;
     margin: 0;
 }
+.dash-badge {
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 20px;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.78rem;
+    color: #8b949e;
+}
 
-/* ── Metric cards ── */
+/* ── KPI cards ── */
 .kpi-card {
     background: #161b22;
     border: 1px solid #30363d;
     border-radius: 12px;
     padding: 1.1rem 1rem;
     text-align: center;
-    height: 100%;
 }
-.kpi-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.1;
-}
-.kpi-label {
-    font-size: 0.72rem;
-    color: #8b949e;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-top: 0.3rem;
-}
+.kpi-value   { font-size: 1.75rem; font-weight: 700; margin: 0; line-height: 1.1; }
+.kpi-label   { font-size: 0.72rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.3rem; }
 .kpi-neutral { color: #58a6ff; }
 .kpi-good    { color: #3fb950; }
 .kpi-warn    { color: #e3b341; }
@@ -89,54 +120,35 @@ st.markdown("""
     border-left: 3px solid #58a6ff;
     border-radius: 0 8px 8px 0;
     padding: 0.85rem 1.1rem;
-    margin: 0.75rem 0 1.25rem 0;
+    margin: 0.75rem 0 1.25rem;
     font-size: 0.88rem;
     color: #c9d1d9;
     line-height: 1.6;
 }
 
-/* ── Empty state ── */
-.empty-state {
-    text-align: center;
-    padding: 4rem 1rem;
-    color: #8b949e;
-}
-.empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-.empty-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #c9d1d9;
-    margin-bottom: 0.4rem;
-}
-
 /* ── Section divider ── */
-.section-sep {
-    border: none;
-    border-top: 1px solid #21262d;
-    margin: 1.25rem 0;
-}
+.section-sep { border: none; border-top: 1px solid #21262d; margin: 1.25rem 0; }
 
 /* ── Tabs ── */
 .stTabs [data-baseweb="tab-list"] { gap: 0.35rem; }
-button[data-baseweb="tab"] {
-    border-radius: 8px 8px 0 0 !important;
-}
+button[data-baseweb="tab"]        { border-radius: 8px 8px 0 0 !important; }
 
 /* ── Dataframes ── */
 [data-testid="stDataFrame"] { border-radius: 8px; overflow: hidden; }
+
+/* ── Divider text ── */
+.or-divider {
+    text-align: center;
+    color: #30363d;
+    font-size: 0.85rem;
+    padding: 2rem 0 0;
+    letter-spacing: 0.1em;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# ── Hero ──────────────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="hero">
-    <div class="hero-title">🧹 Cleansheet</div>
-    <p class="hero-sub">Upload a messy spreadsheet and get instant data-quality insights — then fix it.</p>
-</div>
-""", unsafe_allow_html=True)
 
-
-# ── Data loaders ──────────────────────────────────────────────────────────────
+# ── Helpers ───────────────────────────────────────────────────────────────────
 @st.cache_data(show_spinner="Reading file…")
 def load_sample():
     return load_file(SAMPLE_PATH)
@@ -147,106 +159,167 @@ def load_upload(file_bytes: bytes, filename: str):
     return load_file(io.BytesIO(file_bytes), filename=filename)
 
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("### 📂 Data Source")
-    source = st.radio(
-        "source",
-        ["📊 Sample dataset", "⬆ Upload my own file"],
-        label_visibility="collapsed",
+def kpi(value, label, tone="neutral"):
+    return (
+        f'<div class="kpi-card">'
+        f'<div class="kpi-value kpi-{tone}">{value}</div>'
+        f'<div class="kpi-label">{label}</div>'
+        f"</div>"
     )
 
-    uploaded = None
-    if "Upload" in source:
-        st.markdown("---")
-        uploaded = st.file_uploader(
-            "Drag & drop or browse",
-            type=["csv", "xlsx", "xls"],
-            label_visibility="visible",
-        )
-        if uploaded:
-            st.success(f"✅ {uploaded.name}")
 
-    st.markdown("---")
-    st.caption("Supported formats: CSV · XLSX · XLS")
+def reset_to_landing():
+    for k in ["chosen_source", "wdf", "_src_key", "uploaded_bytes", "uploaded_name"]:
+        st.session_state.pop(k, None)
+    st.rerun()
 
 
-# ── Load raw dataframe ────────────────────────────────────────────────────────
-try:
-    if "Sample" in source:
-        _raw_df = load_sample()
-        _src_key = "sample"
-    elif uploaded is not None:
-        _raw_df = load_upload(uploaded.getvalue(), uploaded.name)
-        _src_key = uploaded.name
-    else:
+# ══════════════════════════════════════════════════════════════════════════════
+# LANDING PAGE  (shown until user picks a source)
+# ══════════════════════════════════════════════════════════════════════════════
+if st.session_state.get("chosen_source") is None:
+
+    st.markdown("""
+    <div class="landing-hero">
+        <div class="landing-title">🧹 Cleansheet</div>
+        <p class="landing-sub">
+            Upload a messy spreadsheet and get instant data-quality insights — then fix it.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    left_card, spacer, right_card = st.columns([5, 1, 5])
+
+    # ── Left: sample dataset ──────────────────────────────────────────────────
+    with left_card:
         st.markdown("""
-        <div class="empty-state">
-            <div class="empty-icon">📂</div>
-            <div class="empty-title">No file loaded yet</div>
-            <div>Pick <strong>Sample dataset</strong> in the sidebar or upload your own CSV / Excel file.</div>
+        <div class="choice-card">
+            <div class="choice-icon">📊</div>
+            <div class="choice-title">Try the sample dataset</div>
+            <div class="choice-desc">
+                A real-world retail sales dataset, pre-loaded and ready to explore.
+                Great for a quick tour of what Cleansheet can do.
+            </div>
+            <span class="choice-pill">9,994 rows</span>
+            <span class="choice-pill">Real-world gaps</span>
+            <span class="choice-pill">No upload needed</span>
         </div>
         """, unsafe_allow_html=True)
-        st.stop()
+
+        st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
+
+        if st.button("Use sample dataset", type="primary", use_container_width=True):
+            st.session_state["chosen_source"] = "sample"
+            st.rerun()
+
+    # ── Right: file upload ────────────────────────────────────────────────────
+    with right_card:
+        st.markdown("""
+        <div class="choice-card">
+            <div class="choice-icon">⬆</div>
+            <div class="choice-title">Upload your own file</div>
+            <div class="choice-desc">
+                Drop a CSV or Excel file below. Your data stays in this browser session
+                and is never stored on any server.
+            </div>
+            <span class="choice-pill">CSV</span>
+            <span class="choice-pill">XLSX</span>
+            <span class="choice-pill">XLS</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
+
+        uploaded = st.file_uploader(
+            "Drag & drop or click to browse",
+            type=["csv", "xlsx", "xls"],
+            label_visibility="collapsed",
+        )
+        if uploaded is not None:
+            st.session_state["chosen_source"] = "upload"
+            st.session_state["uploaded_bytes"] = uploaded.getvalue()
+            st.session_state["uploaded_name"] = uploaded.name
+            st.rerun()
+
+    st.stop()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# DASHBOARD  (shown after source is chosen)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── Load raw dataframe ────────────────────────────────────────────────────────
+chosen = st.session_state["chosen_source"]
+try:
+    if chosen == "sample":
+        _raw_df = load_sample()
+        _src_key = "sample"
+        _file_label = "retail_store_sales.csv"
+    else:
+        _raw_df = load_upload(
+            st.session_state["uploaded_bytes"],
+            st.session_state["uploaded_name"],
+        )
+        _src_key = st.session_state["uploaded_name"]
+        _file_label = _src_key
 except ValueError as exc:
     st.error(str(exc))
+    if st.button("Go back"):
+        reset_to_landing()
     st.stop()
 except Exception as exc:
     st.error(f"Couldn't read that file: {exc}")
+    if st.button("Go back"):
+        reset_to_landing()
     st.stop()
 
-
 # ── Session-state working copy ────────────────────────────────────────────────
-# Reset whenever the source changes so cleaning history doesn't bleed across files.
 if st.session_state.get("_src_key") != _src_key:
     st.session_state["_src_key"] = _src_key
     st.session_state["wdf"] = _raw_df.copy()
 
 df: pd.DataFrame = st.session_state["wdf"]
 
+# ── Top bar ───────────────────────────────────────────────────────────────────
+bar_left, bar_right = st.columns([7, 1])
+with bar_left:
+    st.markdown(
+        f'<div class="dash-bar">'
+        f'<span class="dash-title">🧹 Cleansheet</span>'
+        f'<span class="dash-badge">📄 {_file_label}</span>'
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+with bar_right:
+    if st.button("⬅ Change dataset", use_container_width=True):
+        reset_to_landing()
 
 # ── Summary stats ─────────────────────────────────────────────────────────────
 rows, cols_n = df.shape
-missing_cells = int(df.isna().sum().sum())
+missing_cells  = int(df.isna().sum().sum())
 duplicate_rows = int(df.duplicated().sum())
-total_cells = rows * cols_n
-pct_missing = missing_cells / total_cells * 100 if total_cells else 0
-health = max(0, round(100 - pct_missing - (duplicate_rows / rows * 5 if rows else 0)))
+total_cells    = rows * cols_n
+pct_missing    = missing_cells / total_cells * 100 if total_cells else 0
+health         = max(0, round(100 - pct_missing - (duplicate_rows / rows * 5 if rows else 0)))
 
 # ── KPI row ───────────────────────────────────────────────────────────────────
-def kpi(value, label, tone="neutral"):
-    return f"""
-    <div class="kpi-card">
-        <div class="kpi-value kpi-{tone}">{value}</div>
-        <div class="kpi-label">{label}</div>
-    </div>"""
-
-
 c1, c2, c3, c4, c5 = st.columns(5)
 c1.markdown(kpi(f"{rows:,}", "Rows"), unsafe_allow_html=True)
 c2.markdown(kpi(cols_n, "Columns"), unsafe_allow_html=True)
-c3.markdown(
-    kpi(f"{missing_cells:,}", "Missing Cells", "bad" if missing_cells else "good"),
-    unsafe_allow_html=True,
-)
-c4.markdown(
-    kpi(f"{duplicate_rows:,}", "Duplicate Rows", "warn" if duplicate_rows else "good"),
-    unsafe_allow_html=True,
-)
-c5.markdown(
-    kpi(
-        f"{health}%",
-        "Health Score",
-        "good" if health >= 90 else ("warn" if health >= 70 else "bad"),
-    ),
-    unsafe_allow_html=True,
-)
+c3.markdown(kpi(f"{missing_cells:,}", "Missing Cells",
+                "bad" if missing_cells else "good"), unsafe_allow_html=True)
+c4.markdown(kpi(f"{duplicate_rows:,}", "Duplicate Rows",
+                "warn" if duplicate_rows else "good"), unsafe_allow_html=True)
+c5.markdown(kpi(f"{health}%", "Health Score",
+                "good" if health >= 90 else ("warn" if health >= 70 else "bad")),
+            unsafe_allow_html=True)
 
 st.markdown("<div style='margin-top:1.5rem'></div>", unsafe_allow_html=True)
 
 # ── Main tabs ─────────────────────────────────────────────────────────────────
-overview_tab, clean_tab = st.tabs(["📋  Overview", "🧹  Clean Data"])
-
+overview_tab, clean_tab, transform_tab, plot_tab = st.tabs(
+    ["📋  Overview", "🧹  Clean Data", "🔧  Transform Columns", "📈  Plot Graphs"]
+)
 
 # ════════════════════════════════════════════════════════════════════════════════
 # OVERVIEW TAB
@@ -298,8 +371,8 @@ with overview_tab:
     with types_sub:
         types_df = df.dtypes.astype(str).to_frame("Type")
         types_df["Unique Values"] = df.nunique()
-        types_df["Null Count"] = df.isna().sum()
-        types_df["Sample Value"] = [
+        types_df["Null Count"]    = df.isna().sum()
+        types_df["Sample Value"]  = [
             str(df[c].dropna().iloc[0]) if df[c].notna().any() else "—"
             for c in df.columns
         ]
@@ -326,20 +399,17 @@ with overview_tab:
 with clean_tab:
     cols_with_missing = df.columns[df.isna().any()].tolist()
 
-    # ── No issues ─────────────────────────────────────────────────────────────
     if not cols_with_missing:
         st.success("Your data has no missing values — nothing to clean! 🎉")
     else:
         st.markdown("""
         <div class="info-callout">
             Select a column, pick a strategy, then hit <strong>Apply</strong>.
-            All changes are applied to your in-session copy — download when you're done.
+            Changes live in your session — download when you're done.
         </div>
         """, unsafe_allow_html=True)
 
-        # ── Column picker ──────────────────────────────────────────────────────
         left, right = st.columns([1, 2])
-
         with left:
             selected_col = st.selectbox(
                 "Column to fix",
@@ -347,50 +417,37 @@ with clean_tab:
                 format_func=lambda c: f"{c}  ({df[c].isna().sum()} missing)",
             )
 
-        col_idx = df.columns.get_loc(selected_col)
+        col_idx   = df.columns.get_loc(selected_col)
         col_series = df[selected_col]
-        n_missing = int(col_series.isna().sum())
-        pct = round(n_missing / rows * 100, 1)
+        n_missing  = int(col_series.isna().sum())
+        pct        = round(n_missing / rows * 100, 1)
         is_numeric = pd.api.types.is_numeric_dtype(col_series)
 
         with right:
             m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Missing", f"{n_missing:,}")
-            m2.metric("Missing %", f"{pct}%")
-            m3.metric("Type", str(col_series.dtype))
+            m1.metric("Missing",        f"{n_missing:,}")
+            m2.metric("Missing %",      f"{pct}%")
+            m3.metric("Type",           str(col_series.dtype))
             m4.metric("Unique (non-null)", int(col_series.nunique()))
 
         st.markdown("<hr class='section-sep'>", unsafe_allow_html=True)
-
-        # ── Strategy picker ────────────────────────────────────────────────────
-        if is_numeric:
-            strategies = [
-                "Fill with Mean",
-                "Fill with Median",
-                "Fill with Mode",
-                "Linear Interpolation",
-                "Fill with Custom Value",
-                "Drop rows",
-            ]
-        else:
-            strategies = [
-                "Fill with Mode",
-                "Fill with Custom Value",
-                "Drop rows",
-            ]
-
         st.markdown("**Strategy**")
-        strategy = st.radio("strategy", strategies, horizontal=True, label_visibility="collapsed")
+
+        strategies = (
+            ["Fill with Mean", "Fill with Median", "Fill with Mode",
+             "Linear Interpolation", "Fill with Custom Value", "Drop rows"]
+            if is_numeric
+            else ["Fill with Mode", "Fill with Custom Value", "Drop rows"]
+        )
+        strategy = st.radio("strategy", strategies, horizontal=True,
+                            label_visibility="collapsed")
 
         custom_val = None
         if strategy == "Fill with Custom Value":
-            custom_val = st.text_input(
-                "Custom fill value",
-                placeholder="e.g.  0   or   Unknown",
-            )
+            custom_val = st.text_input("Custom fill value",
+                                       placeholder="e.g.  0   or   Unknown")
 
         apply_col, reset_col, _ = st.columns([1, 1, 6])
-
         with apply_col:
             apply = st.button("✅ Apply", type="primary")
         with reset_col:
@@ -408,7 +465,7 @@ with clean_tab:
                 elif strategy == "Linear Interpolation":
                     wdf = fill_missing_values_interpolation(wdf, col_idx)
                 elif strategy == "Fill with Custom Value":
-                    if custom_val is None or custom_val.strip() == "":
+                    if not custom_val or not custom_val.strip():
                         st.warning("Enter a custom value first.")
                         st.stop()
                     typed_val: object = custom_val
@@ -432,7 +489,6 @@ with clean_tab:
             st.success(f"Reset `{selected_col}` to original values.")
             st.rerun()
 
-        # ── Column preview ─────────────────────────────────────────────────────
         st.markdown("<hr class='section-sep'>", unsafe_allow_html=True)
         st.markdown("**Column preview** (first 20 rows)")
         st.dataframe(
@@ -440,10 +496,8 @@ with clean_tab:
             use_container_width=True,
         )
 
-    # ── Download ───────────────────────────────────────────────────────────────
     st.markdown("<hr class='section-sep'>", unsafe_allow_html=True)
     st.markdown("**Export cleaned data**")
-
     dl1, dl2, _ = st.columns([1, 1, 6])
     with dl1:
         st.download_button(
@@ -455,5 +509,19 @@ with clean_tab:
             use_container_width=True,
         )
     with dl2:
-        remaining = int(df.isna().sum().sum())
-        st.caption(f"{remaining:,} missing cells remain")
+        st.caption(f"{int(df.isna().sum().sum()):,} missing cells remain")
+
+
+# ════════════════════════════════════════════════════════════════════════════════
+# TRANSFORM COLUMNS TAB
+# ════════════════════════════════════════════════════════════════════════════════
+with transform_tab:
+    st.info("Column transformations coming soon.")
+    st.dataframe(df.head(10), use_container_width=True)
+
+
+# ════════════════════════════════════════════════════════════════════════════════
+# PLOT GRAPHS TAB
+# ════════════════════════════════════════════════════════════════════════════════
+with plot_tab:
+    st.info("Graph builder coming soon.")

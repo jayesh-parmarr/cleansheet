@@ -8,7 +8,7 @@ __pycache__/
 .venv/
 
 # Datasets
-datasets/
+datasets/destop.ini
 
 # VS Code
 .vscode/
